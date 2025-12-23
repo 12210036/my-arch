@@ -1,0 +1,47 @@
+{
+    "height": 45,
+    "layer": "top",
+    "position": "top",
+
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["pulseaudio", "battery", "custom/network-status"], // USANDO EL MÓDULO CUSTOM
+
+    "battery": {
+        "format": "{capacity}%",
+        "warn": 15,
+        "critical": 5,
+        "thresholds": [15, 5],
+        "format-charging": "⚡ {capacity}%",
+        "format-discharging": "{capacity}%"
+    },
+    
+    "clock": {
+        // Usamos formato simple para evitar el error de sintaxis del clock
+            "format": "🕑 {:%a %d %b | %H:%M}",
+            "tooltip": false ,
+            "on-click": "/usr/bin/morgen"
+    },
+
+    "pulseaudio": {
+        "format": "\uf028 {volume}%",
+        "format-muted": "\uf026 MUTED",
+        "on-click": "pavucontrol"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "max-length": 20,
+        "spacing": 4,
+        "scroll-up": "scroll_up",
+        "scroll-down": "scroll_down"
+    },
+
+    // NUEVO MÓDULO PERSONALIZADO (CUSTOM)
+    "custom/network-status": {
+        "exec": "~/.config/waybar/scripts/network_status.sh",
+        "return-type": "json", // Lee el JSON devuelto por el script (texto y clase)
+        "interval": 5, 
+        "on-click": "nm-connection-editor"
+    }
+}
