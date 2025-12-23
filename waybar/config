@@ -16,11 +16,11 @@
         "format-discharging": "{capacity}%"
     },
     
-    "clock": {
-        // Usamos formato simple para evitar el error de sintaxis del clock
-            "format": "🕑 {:%a %d %b | %H:%M}",
-            "tooltip": false ,
-            "on-click": "/usr/bin/morgen"
+   "clock": {
+        "format": "{:%H:%M}  ",
+        "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "on-click": "kitty --class floating_terminal -e calcurse"
     },
 
     "pulseaudio": {
