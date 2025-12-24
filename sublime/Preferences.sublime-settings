@@ -1,0 +1,12 @@
+{
+    "font_face": "Monocraft", 
+    "font_size": 13,
+    "font_options": ["subpixel_antialias"],
+    "highlight_line": true,
+    "ignored_packages": ["Vintage",
+    ],
+    "overlay_scroll_bars": "enabled",
+    "theme": "Adaptive.sublime-theme",
+    "color_scheme": "Wal.sublime-color-scheme",
+    "index_files": true,
+}
