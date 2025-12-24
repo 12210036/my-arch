@@ -2,11 +2,11 @@
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-echo -e "${CYAN}🚀 Iniciando instalación completa...${NC}"
+echo -e "${CYAN}Iniciando instalación completa...${NC}"
 
 # 1. Instalar yay (si no existe) para manejar AUR (Sublime, Pywal, etc)
 if ! command -v yay &> /dev/null; then
-    echo -e "${CYAN}📦 Instalando yay...${NC}"
+    echo -e "${CYAN} Instalando yay...${NC}"
     sudo pacman -S --needed base-devel git
     git clone https://aur.archlinux.org/yay.git
     cd yay && makepkg -si && cd ..
@@ -14,9 +14,8 @@ if ! command -v yay &> /dev/null; then
 fi
 
 # 2. Instalar todas las dependencias
-echo -e "${CYAN}📦 Instalando programas de sistema, editores y estética...${NC}"
+echo -e "${CYAN} Instalando programas de sistema, editores y estética...${NC}"
 # En la sección de instalación de paquetes de tu install.sh
-# Añade hyprshot a la lista de instalación
 yay -S --needed hyprland kitty waybar rofi calcurse glava micro \
 neofetch python-pywal sublime-text-4 otf-monocraft hyprshot
 
@@ -28,7 +27,7 @@ mkdir -p ~/Pictures/wallpapers
 cp -rf ./walpapers/* ~/walpapers/
 
 # 3. Crear carpetas y copiar configuraciones
-echo -e "${CYAN}📂 Restaurando configuraciones (.config)...${NC}"
+echo -e "${CYAN}Restaurando configuraciones (.config)...${NC}"
 mkdir -p ~/.config/{hypr,waybar,kitty,calcurse,glava,rofi,sublime-text/Packages/User}
 
 cp -rf ./hypr/* ~/.config/hypr/
@@ -46,9 +45,9 @@ chmod +x ~/*.sh
 chmod +x ./install.sh
 
 # 5. Plugins de Hyprland
-echo -e "${CYAN}🧩 Activando plugins...${NC}"
+echo -e "${CYAN}Activando plugins...${NC}"
 hyprpm add https://github.com/hyprwm/hyprland-plugins
 hyprpm enable hyprbar
 hyprpm reload
 
-echo -e "${CYAN}✅ ¡Sistema restaurado!${NC}"
+echo -e "${CYAN}¡Sistema restaurado!${NC}"
