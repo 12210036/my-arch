@@ -7,8 +7,9 @@ tambien estoy personalizando mi arch linux
 
 * **OS** : arch linux
 * **WM** : Hyprland
-* **Terminal** : kitty
+* **Terminal** : kitty (se habre con SUPER+Q)
 * **bar** : waybar
+* **Lanzador de aplicaciones** : rofi (se habre con SUPER+R)
 
 ## estructura
 
@@ -19,11 +20,11 @@ tambien estoy personalizando mi arch linux
 
 ##instalacion
 
->antes de lo siguiente, tienes que clonar el repositorio ```bash
-   git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git)
-   cd my-arch```
+>antes de lo siguiente, tienes que clonar el repositorio
+ ```git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git)
+  cd my-arch```
 
-puedes usarlo de forma manual, 
+puedes usarlo de forma manual:
 
 **instalando las dependencias**
 
@@ -51,6 +52,8 @@ cp -rf ./*.sh ~/
 
 o tambien con el install.sh
 
+> El script utiliza sudo pacman, asegúrate de revisar el contenido de install.sh antes de ejecutarlo para entender los cambios que realizará en tu sistema.
+
 **dar permisos**
 ```bash
 chmod +x install.sh
@@ -60,4 +63,3 @@ chmod +x install.sh
 ```bash
 ./install.sh
 ```
->[!WARNING] El script utiliza sudo pacman, asegúrate de revisar el contenido de install.sh antes de ejecutarlo para entender los cambios que realizará en tu sistema.
