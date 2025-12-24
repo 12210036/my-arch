@@ -16,3 +16,48 @@ tambien estoy personalizando mi arch linux
 * `waybar/`: Estilo y módulos de la barra superior.
 * `calcurse/`: Calendario TUI personalizado.
 * `glava/`: Visualizador de audio. 
+
+##instalacion
+
+>antes de lo siguiente, tienes que clonar el repositorio ```bash
+   git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git)
+   cd my-arch```
+
+puedes usarlo de forma manual, 
+
+**instalando las dependencias**
+
+```bash
+sudo pacman -S hyprland kitty waybar rofi calcurse glava micro
+```
+
+**copiando la configuracion**
+
+```bash
+cp -rf ./hypr/* ~/.config/hypr/
+cp -rf ./waybar/* ~/.config/waybar/
+cp -rf ./kitty/* ~/.config/kitty/
+cp -rf ./calcurse/* ~/.config/calcurse/
+cp -rf ./glava/* ~/.config/glava/
+cp -rf ./rofi/* ~/.config/rofi/
+```
+
+**dar permisos a los scripts**
+```bash
+chmod +x ./*.sh
+mkdir -p ~/
+cp -rf ./*.sh ~/
+```
+
+o tambien con el install.sh
+
+**dar permisos**
+```bash
+chmod +x install.sh
+```
+
+**ejecutar**
+```bash
+./install.sh
+```
+>[!WARNING] El script utiliza sudo pacman, asegúrate de revisar el contenido de install.sh antes de ejecutarlo para entender los cambios que realizará en tu sistema.
