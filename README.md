@@ -15,19 +15,17 @@ tambien estoy personalizando mi arch linux
 * **Editor**: Sublime Text 4 (Configuración en `sublime/`)
 * **Colores**: Pywal (Genera paletas de colores desde tu wallpaper)
 * **Plugins**: Hyprbar (Título en ventanas flotantes)
-* **wallpaper Engine** : swww (soporta gifs y transiciones y se usa con ALT+B) 
-
-## 📂 Archivos en este Repo
-...
-* `sublime/`: Mis Keybindings y settings personalizados de Sublime Text.
-* `scripts/`: Scripts que conectan Pywal con Waybar y Hyprland.
+* **wallpaper Engine** : swww (soporta gifs y transiciones y se usa con ALT+B)
+* **Capturas de pantalla**: hyprshot (se usa con SUPER+P)
 
 ## estructura
 
 * `hypr/`: Configuración de Hyprland (reglas de ventana, binds).
 * `waybar/`: Estilo y módulos de la barra superior.
 * `calcurse/`: Calendario TUI personalizado.
-* `glava/`: Visualizador de audio. 
+* `glava/`: Visualizador de audio.
+* `sublime/`: Mis Keybindings y settings personalizados de Sublime Text.
+* `scripts/`: Scripts que conectan Pywal con Waybar y Hyprland.
 
 ## instalacion
 
