@@ -18,11 +18,9 @@ tambien estoy personalizando mi arch linux
 * `calcurse/`: Calendario TUI personalizado.
 * `glava/`: Visualizador de audio. 
 
-##instalacion
+## instalacion
 
->antes de lo siguiente, tienes que clonar el repositorio
- ```git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git)
-  cd my-arch```
+>antes de lo siguiente, tienes que clonar el repositorio ``` git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git) cd my-arch```
 
 puedes usarlo de forma manual:
 
