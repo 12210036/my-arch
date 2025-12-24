@@ -1,7 +1,7 @@
 # my-arch hyprland setup
 Hola, este es mi primera vez haciendo mi repositorio de Dotfiles. soy desarrollador no se si programador,tengo 15 y estoy aprendiendo c++ ocn las librerias SFML y Qt.
 tambien estoy personalizando mi arch linux
-
+![Desktop Preview](./2025-12-23-200407_hyprshot.jpg)(./2025-12-23-200242_hyprshot.jpg)
 ## preview
 >Mi setup utiliza un entorno minimalista, como ventanas flotantes y visualizadores de audio(Glava god)
 
