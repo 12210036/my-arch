@@ -16,8 +16,9 @@ fi
 # 2. Instalar todas las dependencias
 echo -e "${CYAN}📦 Instalando programas de sistema, editores y estética...${NC}"
 # En la sección de instalación de paquetes de tu install.sh
+# Añade hyprshot a la lista de instalación
 yay -S --needed hyprland kitty waybar rofi calcurse glava micro \
-neofetch python-pywal sublime-text-4 otf-monocraft ttf-minecraft
+neofetch python-pywal sublime-text-4 otf-monocraft hyprshot
 
 # Añade swww a la lista de instalación de yay
 yay -S --needed swww
