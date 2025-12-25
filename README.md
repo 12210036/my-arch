@@ -5,6 +5,7 @@ tambien estoy personalizando mi arch linux
 
 ![Desktop Preview](./2025-12-23-200407_hyprshot.png)
 ![Spotify & Glava](./2025-12-23-200242_hyprshot.png)
+![Sublime](2025-12-25-045039_hyprshot.png)
 
 ## preview
 >Mi setup utiliza un entorno minimalista, como ventanas flotantes y visualizadores de audio(**Glava god**)
