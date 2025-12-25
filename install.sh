@@ -82,7 +82,19 @@ if [ -f "$REPO_PATH/dotfiles/bash/.bashrc" ]; then
     cp -f "$REPO_PATH/dotfiles/bash/.bashrc" "$HOME/.bashrc"
     echo -e "${GREEN}✔ .bashrc actualizado.${NC}"
 fi
+# --- Sección específica para Sublime Text ---
+echo -e "${CYAN}💻 Configurando Sublime Text 4...${NC}"
+SUBLIME_TARGET="$HOME/.config/sublime-text-3/Packages/User"
 
+if [ -d "$REPO_PATH/sublime" ]; then
+    # Crear la ruta por si no existe
+    mkdir -p "$SUBLIME_TARGET"
+    # Copiar solo el contenido de tu carpeta sublime/ a la carpeta User de Sublime
+    cp -rf "$REPO_PATH/sublime"/* "$SUBLIME_TARGET/"
+    echo -e "${GREEN}✔ Configuración de Sublime Text instalada en Packages/User.${NC}"
+else
+    echo -e "${RED}✘ Error: No se encontró la carpeta sublime/ en el repo.${NC}"
+fi
 # 7. NOTA FINAL SOBRE GLAVA Y PYWAL
 echo -e "${YELLOW}⚠️  Nota: Para que Glava use tus colores de Pywal, recuerda ejecutar:${NC}"
 echo -e "${CYAN}ln -sf ~/.cache/wal/glava.glsl ~/.config/glava/pywal_colors.glsl${NC}"

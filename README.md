@@ -1,10 +1,13 @@
 # my-arch hyprland setup
+
 Hola, este es mi primera vez haciendo mi repositorio de Dotfiles. soy desarrollador no se si programador,tengo 15 y estoy aprendiendo c++ ocn las librerias SFML y Qt.
 tambien estoy personalizando mi arch linux
+
 ![Desktop Preview](./2025-12-23-200407_hyprshot.png)
 ![Spotify & Glava](./2025-12-23-200242_hyprshot.png)
+
 ## preview
->Mi setup utiliza un entorno minimalista, como ventanas flotantes y visualizadores de audio(Glava god)
+>Mi setup utiliza un entorno minimalista, como ventanas flotantes y visualizadores de audio(**Glava god**)
 
 * **OS** : arch linux
 * **WM** : Hyprland
@@ -12,7 +15,7 @@ tambien estoy personalizando mi arch linux
 * **bar** : waybar
 * **Lanzador de aplicaciones** : rofi (se habre con SUPER+R)
 
-## 🛠️ Tecnologías Adicionales
+## Tecnologías Adiciional
 * **Editor**: Sublime Text 4 (Configuración en `sublime/`)
 * **Colores**: Pywal (Genera paletas de colores desde tu wallpaper)
 * **Plugins**: Hyprbar (Título en ventanas flotantes)
@@ -29,35 +32,6 @@ tambien estoy personalizando mi arch linux
 * `scripts/`: Scripts que conectan Pywal con Waybar y Hyprland.
 
 ## instalacion
-
->antes de lo siguiente, tienes que clonar el repositorio ``` git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git) cd my-arch```
-
-puedes usarlo de forma manual:
-
-**instalando las dependencias**
-
-```bash
-sudo pacman -S hyprland kitty waybar rofi calcurse glava micro
-```
-
-**copiando la configuracion**
-
-```bash
-cp -rf ./hypr/* ~/.config/hypr/
-cp -rf ./waybar/* ~/.config/waybar/
-cp -rf ./kitty/* ~/.config/kitty/
-cp -rf ./calcurse/* ~/.config/calcurse/
-cp -rf ./glava/* ~/.config/glava/
-cp -rf ./rofi/* ~/.config/rofi/
-```
-
-**dar permisos a los scripts**
-```bash
-chmod +x ./*.sh
-mkdir -p ~/
-cp -rf ./*.sh ~/
-```
-
 o tambien con el install.sh
 
 > El script utiliza sudo pacman, asegúrate de revisar el contenido de install.sh antes de ejecutarlo para entender los cambios que realizará en tu sistema.
@@ -71,3 +45,33 @@ chmod +x install.sh
 ```bash
 ./install.sh
 ```
+
+>antes de lo siguiente, tienes que clonar el repositorio ``` git clone [https://github.com/12210036/my-arch.git](https://github.com/12210036/my-arch.git) cd my-arch```
+
+**puedes usarlo de forma manual:**
+
+instalando las dependencias
+
+```bash
+sudo pacman -S hyprland kitty waybar rofi calcurse glava micro
+```
+
+copiando la configuracion
+
+```bash
+cp -rf ./dotfiles/hypr/* ~/.config/hypr/
+cp -rf ./dotfiles/waybar/* ~/.config/waybar/
+cp -rf ./dotfiles/kitty/* ~/.config/kitty/
+cp -rf ./dotfiles/calcurse/* ~/.config/calcurse/
+cp -rf ./dotfiles/glava/* ~/.config/glava/
+cp -rf ./dotfiles/rofi/* ~/.config/rofi/
+```
+
+dar permisos a los scripts
+```bash
+chmod +x ./scripts/*.sh
+mkdir -p ~/
+cp -rf ./scripts/*.sh ~/
+```
+
+desarrollado por Dogma25
