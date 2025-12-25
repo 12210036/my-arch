@@ -1,71 +1,92 @@
 #!/bin/bash
 
-# --- Colores ---
+# --- Colores para la terminal ---
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-# Obtener la ruta absoluta de donde está el script instalado
-# Esto evita que los enlaces se rompan si ejecutas el script desde otra carpeta
 REPO_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo -e "${CYAN}🚀 Asegurando configuración de My-Arch...${NC}"
+echo -e "${CYAN}🚀 Iniciando Instalación de My-Arch Setup...${NC}"
 
-# 1. Función para crear Enlaces Simbólicos (Dotfiles)
-# Esta versión es más robusta: borra lo viejo y enlaza a la nueva carpeta 'dotfiles'
-create_symlink() {
-    local folder_name=$1
-    local source="$REPO_PATH/dotfiles/$folder_name"
-    local target="$HOME/.config/$folder_name"
+# 1. INSTALACIÓN DE DEPENDENCIAS (PACMAN)
+echo -e "${CYAN}📦 Instalando programas desde repositorios oficiales...${NC}"
+PROGRAMAS=(
+    "hyprland" "kitty" "waybar" "rofi-wayland" 
+    "calcurse" "glava" "micro" "swww" 
+    "python-pywal" "grim" "slurp" "hyprshot"
+)
 
-    if [ -d "$source" ]; then
-        echo -e "${GREEN}🔗 Enlazando .config/$folder_name...${NC}"
-        rm -rf "$target" # Borra carpeta o enlace roto previo
-        ln -s "$source" "$target"
+for proga in "${PROGRAMAS[@]}"; do
+    if pacman -Qi "$proga" &> /dev/null; then
+        echo -e "${GREEN}✔ $proga ya está instalado.${NC}"
     else
-        echo -e "${YELLOW}⚠ Carpeta $folder_name no encontrada en dotfiles/, saltando...${NC}"
+        echo -e "${YELLOW}Installing $proga...${NC}"
+        sudo pacman -S --needed --noconfirm "$proga"
+    fi
+done
+
+# 2. CREACIÓN DE DIRECTORIOS
+echo -e "${CYAN}📂 Preparando carpetas en ~/.config...${NC}"
+mkdir -p ~/.config/{hypr,waybar,kitty,calcurse,glava,rofi}
+mkdir -p ~/.local/bin
+mkdir -p ~/Pictures/wallpapers
+
+# 3. INSTALACIÓN DE CONFIGURACIONES (DOTFILES)
+# Usamos copia física para que el sistema sea independiente del repo
+echo -e "${CYAN}⚙️  Copiando archivos de configuración...${NC}"
+
+# Función para copiar con seguridad
+copy_config() {
+    local dir=$1
+    if [ -d "$REPO_PATH/dotfiles/$dir" ]; then
+        cp -rf "$REPO_PATH/dotfiles/$dir"/* "$HOME/.config/$dir/"
+        echo -e "${GREEN}✔ Config de $dir instalada.${NC}"
+    else
+        echo -e "${RED}✘ Error: No se encontró la carpeta dotfiles/$dir en el repo.${NC}"
     fi
 }
 
-# 2. Ejecutar enlaces de carpetas en .config
-mkdir -p ~/.config
-configs=("hypr" "waybar" "kitty" "calcurse" "glava" "rofi")
-for folder in "${configs[@]}"; do
-    create_symlink "$folder"
-done
+copy_config "hypr"
+copy_config "waybar"
+copy_config "kitty"
+copy_config "calcurse"
+copy_config "glava"
+copy_config "rofi"
 
-# 3. Reglas Especiales (Archivos que NO van en .config)
-echo -e "${CYAN}➤ Configurando archivos de inicio (Bash)...${NC}"
-if [ -f "$REPO_PATH/dotfiles/bash/.bashrc" ]; then
-    rm -f "$HOME/.bashrc"
-    ln -s "$REPO_PATH/dotfiles/bash/.bashrc" "$HOME/.bashrc"
-    echo -e "${GREEN}🔗 .bashrc enlazado.${NC}"
-fi
-
-# 4. Enlaces de Scripts Personales
-echo -e "${CYAN}➤ Enlazando scripts a ~/.local/bin...${NC}"
-mkdir -p ~/.local/bin
+# 4. INSTALACIÓN DE SCRIPTS PERSONALES
+echo -e "${CYAN}📜 Instalando y dando permisos a los scripts...${NC}"
 if [ -d "$REPO_PATH/scripts" ]; then
-    for script in "$REPO_PATH/scripts"/*.sh; do
-        if [ -f "$script" ]; then
-            name=$(basename "$script")
-            chmod +x "$script"
-            # Enlaza sin la extensión .sh para que sea un comando limpio
-            ln -sf "$script" "$HOME/.local/bin/${name%.sh}"
-            echo -e "${GREEN}📜 Comando '${name%.sh}' listo.${NC}"
-        fi
-    done
+    # Dar permisos de ejecución a todos los scripts
+    chmod +x "$REPO_PATH/scripts"/*.sh
+    # Copiar a ~/.local/bin para que se puedan ejecutar como comandos
+    cp -rf "$REPO_PATH/scripts"/*.sh ~/.local/bin/
+    # También dejar copias en el Home como especificaste
+    cp -rf "$REPO_PATH/scripts"/*.sh ~/
+    echo -e "${GREEN}✔ Scripts instalados en ~/.local/bin y ~/${NC}"
+else
+    echo -e "${RED}✘ Error: No se encontró la carpeta scripts/.${NC}"
 fi
 
-# 5. Wallpapers (Copia, no enlace, para evitar que pywal se confunda)
-echo -e "${CYAN}➤ Actualizando wallpapers...${NC}"
-mkdir -p ~/Pictures/wallpapers
+# 5. WALLPAPERS
+echo -e "${CYAN}🖼  Copiando wallpapers...${NC}"
 if [ -d "$REPO_PATH/wallpaper" ]; then
     cp -rf "$REPO_PATH/wallpaper"/* ~/Pictures/wallpapers/
-    echo -e "${GREEN}✔ Wallpapers listos en ~/Pictures/wallpapers${NC}"
+    echo -e "${GREEN}✔ Wallpapers listos.${NC}"
 fi
 
+# 6. CONFIGURACIÓN DE BASH
+if [ -f "$REPO_PATH/dotfiles/bash/.bashrc" ]; then
+    cp -f "$REPO_PATH/dotfiles/bash/.bashrc" "$HOME/.bashrc"
+    echo -e "${GREEN}✔ .bashrc actualizado.${NC}"
+fi
+
+# 7. NOTA FINAL SOBRE GLAVA Y PYWAL
+echo -e "${YELLOW}⚠️  Nota: Para que Glava use tus colores de Pywal, recuerda ejecutar:${NC}"
+echo -e "${CYAN}ln -sf ~/.cache/wal/glava.glsl ~/.config/glava/pywal_colors.glsl${NC}"
+
 echo -e "${CYAN}------------------------------------------${NC}"
-echo -e "${GREEN}✅ ¡Todo arreglado y sincronizado!${NC}"
-echo -e "${YELLOW}Recuerda: Si mueves la carpeta '$REPO_PATH', deberás correr el script de nuevo.${NC}"
+echo -e "${GREEN}✅ ¡Setup instalado exitosamente!${NC}"
+echo -e "${YELLOW}Reinicia Hyprland o ejecuta 'source ~/.bashrc' para empezar.${NC}"
