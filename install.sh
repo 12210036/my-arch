@@ -9,14 +9,14 @@ NC='\033[0m' # No Color
 
 REPO_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo -e "${CYAN}🚀 Iniciando Instalación de My-Arch Setup...${NC}"
+echo -e "${CYAN}Iniciando Instalación de My-Arch Setup...${NC}"
 
 # 1. INSTALACIÓN DE DEPENDENCIAS (PACMAN)
-echo -e "${CYAN}📦 Instalando programas desde repositorios oficiales...${NC}"
+echo -e "${CYAN}Instalando programas desde repositorios oficiales...${NC}"
 PROGRAMAS=(
     "hyprland" "kitty" "waybar" "rofi-wayland" 
     "calcurse" "glava" "micro" "swww" 
-    "python-pywal" "grim" "slurp" "hyprshot"
+    "python-pywal" "grim" "slurp" "hyprshot" "spotify" "firefox"
 )
 
 for proga in "${PROGRAMAS[@]}"; do
@@ -29,7 +29,7 @@ for proga in "${PROGRAMAS[@]}"; do
 done
 
 # 2. CREACIÓN DE DIRECTORIOS
-echo -e "${CYAN}📂 Preparando carpetas en ~/.config...${NC}"
+echo -e "${CYAN}Preparando carpetas en ~/.config...${NC}"
 mkdir -p ~/.config/{hypr,waybar,kitty,calcurse,glava,rofi}
 mkdir -p ~/.local/bin
 mkdir -p ~/Pictures/wallpapers
