@@ -1,82 +1,95 @@
 #!/bin/bash
 
-# Colores para la terminal
+# --- Colores para una terminal con estilo ---
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${CYAN}🚀 Iniciando instalación de My-Arch...${NC}"
 
-# 1. Instalar yay (si no existe)
+# 1. Instalación de yay (Helper de AUR)
 if ! command -v yay &> /dev/null; then
     echo -e "${YELLOW}➤ Instalando yay...${NC}"
     sudo pacman -S --needed base-devel git
     git clone https://aur.archlinux.org/yay.git
     cd yay && makepkg -si --noconfirm && cd ..
     rm -rf yay
+else
+    echo -e "${GREEN}✔ yay ya está instalado.${NC}"
 fi
 
-# 2. Instalar todas las dependencias
-echo -e "${CYAN}➤ Instalando paquetes y estética...${NC}"
-# He unido las listas para que sea una sola ejecución de yay
+# 2. Instalación de paquetes (Sistema, Editores y Estética)
+echo -e "${CYAN}➤ Instalando paquetes necesarios...${NC}"
 yay -S --needed --noconfirm \
     hyprland kitty waybar rofi calcurse glava micro \
     neofetch python-pywal sublime-text-4 otf-monocraft \
     hyprshot swww
 
-# 3. Preparar directorios
-echo -e "${CYAN}➤ Preparando directorios...${NC}"
+# 3. Organización de Wallpapers
+echo -e "${CYAN}➤ Configurando fondos de pantalla...${NC}"
 mkdir -p ~/Pictures/wallpapers
-mkdir -p ~/.config
-
-# Corrigiendo el nombre de la carpeta de wallpapers (según tu repo es 'walpapers')
-if [ -d "./walpapers" ]; then
-    cp -rf ./walpapers/* ~/Pictures/wallpapers/
+if [ -d "./wallpapers" ]; then
+    cp -rf ./wallpapers/* ~/Pictures/wallpapers/
+    echo -e "${GREEN}✔ Wallpapers copiados a ~/Pictures/wallpapers${NC}"
 fi
 
-# 4. Función Maestra para Enlaces Simbólicos (Symlinks)
-# Esta función borra lo viejo y crea un enlace al repo
+# 4. Función para Enlaces Simbólicos (Dotfiles)
 create_symlink() {
-    local source_dir="$(pwd)/$1"
+    local source_dir="$(pwd)/dotfiles/$1"
     local target_dir="$HOME/.config/$1"
 
     if [ -d "$source_dir" ]; then
         echo -e "${GREEN}🔗 Enlazando: $1${NC}"
-        # Borra la carpeta o enlace viejo para evitar conflictos
-        rm -rf "$target_dir"
-        # Crea el enlace simbólico
+        rm -rf "$target_dir" # Evita conflictos
         ln -s "$source_dir" "$target_dir"
     else
-        echo -e "${YELLOW}⚠ Advertencia: No se encontró la carpeta $1 en el repo${NC}"
+        echo -e "${RED}⚠ No se encontró la carpeta $1 en dotfiles/${NC}"
     fi
 }
 
-# Ejecutar la función para cada carpeta
+echo -e "${CYAN}➤ Creando enlaces simbólicos para configuraciones...${NC}"
+mkdir -p ~/.config
 configs=("hypr" "waybar" "kitty" "calcurse" "glava" "rofi")
 for folder in "${configs[@]}"; do
     create_symlink "$folder"
 done
 
-# Caso especial para Sublime Text (ruta distinta)
-echo -e "${GREEN}🔗 Enlazando: Sublime Text${NC}"
-mkdir -p ~/.config/sublime-text/Packages/
-rm -rf ~/.config/sublime-text/Packages/User
-ln -s "$(pwd)/sublime" ~/.config/sublime-text/Packages/User
+# Caso especial: Sublime Text
+if [ -d "./dotfiles/sublime" ]; then
+    echo -e "${GREEN}🔗 Enlazando: Sublime Text${NC}"
+    mkdir -p ~/.config/sublime-text/Packages/
+    rm -rf ~/.config/sublime-text/Packages/User
+    ln -s "$(pwd)/dotfiles/sublime" ~/.config/sublime-text/Packages/User
+fi
 
-# 5. Configurar Scripts
-echo -e "${CYAN}⚙️ Configurando scripts...${NC}"
-chmod +x ./*.sh
-# No los movemos a ~, los dejamos en el repo y si quieres los enlazas:
-# ln -sf "$(pwd)/script.sh" ~/script.sh
+# 5. Instalación de Scripts Personales
+echo -e "${CYAN}➤ Instalando scripts en ~/.local/bin...${NC}"
+mkdir -p ~/.local/bin
+if [ -d "./scripts" ]; then
+    for script in ./scripts/*.sh; do
+        if [ -f "$script" ]; then
+            script_name=$(basename "$script")
+            chmod +x "$script"
+            # Crea el enlace quitando la extensión .sh para usarlo como comando
+            ln -sf "$(pwd)/scripts/$script_name" "$HOME/.local/bin/${script_name%.sh}"
+            echo -e "${GREEN}📜 Script instalado: ${script_name%.sh}${NC}"
+        fi
+    done
+else
+    echo -e "${YELLOW}⚠ No se encontró la carpeta 'scripts'. Saltando...${NC}"
+fi
 
 # 6. Plugins de Hyprland
 if command -v hyprpm &> /dev/null; then
-    echo -e "${CYAN}➤ Activando plugins de Hyprland...${NC}"
+    echo -e "${CYAN}➤ Configurando plugins de Hyprland...${NC}"
     hyprpm add https://github.com/hyprwm/hyprland-plugins
     hyprpm enable hyprbar
     hyprpm reload
 fi
 
-echo -e "${GREEN}¡Sistema configurado con éxito!${NC}"
-echo -e "${YELLOW}Nota: Ahora cualquier cambio en ~/.config/ se reflejará en este repo.${NC}"
+echo -e "${CYAN}------------------------------------------${NC}"
+echo -e "${GREEN}⭐ ¡Instalación completada con éxito!${NC}"
+echo -e "${YELLOW}Nota: Asegúrate de que ~/.local/bin esté en tu PATH.${NC}"
+echo -e "${CYAN}------------------------------------------${NC}"
