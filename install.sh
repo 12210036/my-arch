@@ -1,95 +1,71 @@
 #!/bin/bash
 
-# --- Colores para una terminal con estilo ---
+# --- Colores ---
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-RED='\033[0;31m'
 NC='\033[0m'
 
-echo -e "${CYAN}🚀 Iniciando instalación de My-Arch...${NC}"
+# Obtener la ruta absoluta de donde está el script instalado
+# Esto evita que los enlaces se rompan si ejecutas el script desde otra carpeta
+REPO_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# 1. Instalación de yay (Helper de AUR)
-if ! command -v yay &> /dev/null; then
-    echo -e "${YELLOW}➤ Instalando yay...${NC}"
-    sudo pacman -S --needed base-devel git
-    git clone https://aur.archlinux.org/yay.git
-    cd yay && makepkg -si --noconfirm && cd ..
-    rm -rf yay
-else
-    echo -e "${GREEN}✔ yay ya está instalado.${NC}"
-fi
+echo -e "${CYAN}🚀 Asegurando configuración de My-Arch...${NC}"
 
-# 2. Instalación de paquetes (Sistema, Editores y Estética)
-echo -e "${CYAN}➤ Instalando paquetes necesarios...${NC}"
-yay -S --needed --noconfirm \
-    hyprland kitty waybar rofi calcurse glava micro \
-    neofetch python-pywal sublime-text-4 otf-monocraft \
-    hyprshot swww
-
-# 3. Organización de Wallpapers
-echo -e "${CYAN}➤ Configurando fondos de pantalla...${NC}"
-mkdir -p ~/Pictures/wallpapers
-if [ -d "./wallpapers" ]; then
-    cp -rf ./wallpapers/* ~/Pictures/wallpapers/
-    echo -e "${GREEN}✔ Wallpapers copiados a ~/Pictures/wallpapers${NC}"
-fi
-
-# 4. Función para Enlaces Simbólicos (Dotfiles)
+# 1. Función para crear Enlaces Simbólicos (Dotfiles)
+# Esta versión es más robusta: borra lo viejo y enlaza a la nueva carpeta 'dotfiles'
 create_symlink() {
-    local source_dir="$(pwd)/dotfiles/$1"
-    local target_dir="$HOME/.config/$1"
+    local folder_name=$1
+    local source="$REPO_PATH/dotfiles/$folder_name"
+    local target="$HOME/.config/$folder_name"
 
-    if [ -d "$source_dir" ]; then
-        echo -e "${GREEN}🔗 Enlazando: $1${NC}"
-        rm -rf "$target_dir" # Evita conflictos
-        ln -s "$source_dir" "$target_dir"
+    if [ -d "$source" ]; then
+        echo -e "${GREEN}🔗 Enlazando .config/$folder_name...${NC}"
+        rm -rf "$target" # Borra carpeta o enlace roto previo
+        ln -s "$source" "$target"
     else
-        echo -e "${RED}⚠ No se encontró la carpeta $1 en dotfiles/${NC}"
+        echo -e "${YELLOW}⚠ Carpeta $folder_name no encontrada en dotfiles/, saltando...${NC}"
     fi
 }
 
-echo -e "${CYAN}➤ Creando enlaces simbólicos para configuraciones...${NC}"
+# 2. Ejecutar enlaces de carpetas en .config
 mkdir -p ~/.config
 configs=("hypr" "waybar" "kitty" "calcurse" "glava" "rofi")
 for folder in "${configs[@]}"; do
     create_symlink "$folder"
 done
 
-# Caso especial: Sublime Text
-if [ -d "./dotfiles/sublime" ]; then
-    echo -e "${GREEN}🔗 Enlazando: Sublime Text${NC}"
-    mkdir -p ~/.config/sublime-text/Packages/
-    rm -rf ~/.config/sublime-text/Packages/User
-    ln -s "$(pwd)/dotfiles/sublime" ~/.config/sublime-text/Packages/User
+# 3. Reglas Especiales (Archivos que NO van en .config)
+echo -e "${CYAN}➤ Configurando archivos de inicio (Bash)...${NC}"
+if [ -f "$REPO_PATH/dotfiles/bash/.bashrc" ]; then
+    rm -f "$HOME/.bashrc"
+    ln -s "$REPO_PATH/dotfiles/bash/.bashrc" "$HOME/.bashrc"
+    echo -e "${GREEN}🔗 .bashrc enlazado.${NC}"
 fi
 
-# 5. Instalación de Scripts Personales
-echo -e "${CYAN}➤ Instalando scripts en ~/.local/bin...${NC}"
+# 4. Enlaces de Scripts Personales
+echo -e "${CYAN}➤ Enlazando scripts a ~/.local/bin...${NC}"
 mkdir -p ~/.local/bin
-if [ -d "./scripts" ]; then
-    for script in ./scripts/*.sh; do
+if [ -d "$REPO_PATH/scripts" ]; then
+    for script in "$REPO_PATH/scripts"/*.sh; do
         if [ -f "$script" ]; then
-            script_name=$(basename "$script")
+            name=$(basename "$script")
             chmod +x "$script"
-            # Crea el enlace quitando la extensión .sh para usarlo como comando
-            ln -sf "$(pwd)/scripts/$script_name" "$HOME/.local/bin/${script_name%.sh}"
-            echo -e "${GREEN}📜 Script instalado: ${script_name%.sh}${NC}"
+            # Enlaza sin la extensión .sh para que sea un comando limpio
+            ln -sf "$script" "$HOME/.local/bin/${name%.sh}"
+            echo -e "${GREEN}📜 Comando '${name%.sh}' listo.${NC}"
         fi
     done
-else
-    echo -e "${YELLOW}⚠ No se encontró la carpeta 'scripts'. Saltando...${NC}"
 fi
 
-# 6. Plugins de Hyprland
-if command -v hyprpm &> /dev/null; then
-    echo -e "${CYAN}➤ Configurando plugins de Hyprland...${NC}"
-    hyprpm add https://github.com/hyprwm/hyprland-plugins
-    hyprpm enable hyprbar
-    hyprpm reload
+# 5. Wallpapers (Copia, no enlace, para evitar que pywal se confunda)
+echo -e "${CYAN}➤ Actualizando wallpapers...${NC}"
+mkdir -p ~/Pictures/wallpapers
+if [ -d "$REPO_PATH/wallpaper" ]; then
+    cp -rf "$REPO_PATH/wallpaper"/* ~/Pictures/wallpapers/
+    echo -e "${GREEN}✔ Wallpapers listos en ~/Pictures/wallpapers${NC}"
 fi
 
 echo -e "${CYAN}------------------------------------------${NC}"
-echo -e "${GREEN}⭐ ¡Instalación completada con éxito!${NC}"
-echo -e "${YELLOW}Nota: Asegúrate de que ~/.local/bin esté en tu PATH.${NC}"
-echo -e "${CYAN}------------------------------------------${NC}"
+echo -e "${GREEN}✅ ¡Todo arreglado y sincronizado!${NC}"
+echo -e "${YELLOW}Recuerda: Si mueves la carpeta '$REPO_PATH', deberás correr el script de nuevo.${NC}"
