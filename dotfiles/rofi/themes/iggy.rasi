@@ -1,0 +1,127 @@
+/* =====================================================
+ * Iggy – Rofi Grid Launcher
+ * Adaptado para Rofi moderno + Hyprland
+ * ===================================================== */
+
+configuration {
+    show-icons: true;
+    drun-display-format: "{icon}\n{name}";
+    sidebar-mode: true;
+}
+
+/* =====================
+ * Variables globales
+ * ===================== */
+* {
+    bg:            rgba(20,20,30,0.85);
+    bg-alt:        rgba(30,30,45,0.85);
+    fg:            #ffffff;
+    accent:        rgba(120,160,255,0.45);
+
+    font: "JetBrainsMono Nerd Font 11";
+    text-color: @fg;
+    background-color: transparent;
+}
+
+/* =====================
+ * Ventana
+ * ===================== */
+window {
+    width: 900px;
+    padding: 20px;
+
+    background-color: @bg;
+
+    border: 4px;
+    border-radius: 16px;
+    border-color: rgba(0,0,0,0.6);
+}
+
+/* =====================
+ * Layout principal
+ * ===================== */
+mainbox {
+    spacing: 14px;
+    children: [ inputbar, listview ];
+}
+
+/* =====================
+ * Barra de entrada
+ * ===================== */
+inputbar {
+    spacing: 10px;
+
+    background-color: @bg-alt;
+    border-radius: 12px;
+
+    children: [ entry ];
+}
+
+entry {
+    placeholder: "Buscar aplicación…";
+    placeholder-color: rgba(200,200,200,0.35);
+    text-color: @fg;
+}
+
+/* =====================
+ * Grid de aplicaciones
+ * ===================== */
+listview {
+    layout: vertical;
+
+    columns: 4;
+    lines: 3;
+
+    spacing: 14px;
+
+    fixed-height: true;
+    fixed-columns: true;
+
+    background-color: transparent;
+}
+
+/* =====================
+ * Elementos (apps)
+ * ===================== */
+element {
+    orientation: horizontal;
+
+    padding: 14px;
+    spacing: 8px;
+
+    background-color: @bg-alt;
+    border-radius: 14px;
+}
+
+element selected {
+    background-color: @accent;
+}
+
+/* =====================
+ * Iconos
+ * ===================== */
+element-icon {
+    size: 64px;
+    horizontal-align: 0.5;
+}
+
+/* =====================
+ * Texto
+ * ===================== */
+element-text {
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+
+    font: "JetBrainsMono Nerd Font 10";
+    text-color: @fg;
+}
+
+/* =====================
+ * Mensajes (error / vacío)
+ * ===================== */
+message {
+    padding: 12px;
+    border-radius: 10px;
+    background-color: @bg-alt;
+    text-color: @fg;
+}

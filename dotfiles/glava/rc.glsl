@@ -1,49 +1,35 @@
-/* El módulo 'bars' es el que mejor queda con la estética de bloques */
+/* 1. IMPORTACIÓN DE COLORES (Pywal) */
+/* Esto debe ir al principio para que los módulos reconozcan las variables */
+#include "pywal_colors.glsl"
+/* 2. SOLICITUD DE MÓDULO */
 #request mod bars
 
-/* Window hints: Clave para que Hyprland lo maneje como un widget */
+/* 3. CONFIGURACIÓN DE VENTANA (Optimizado para Hyprland) */
 #request setfloating     true
 #request setdecorated    false
 #request setfocused      false
 #request setmaximized    false
+#request setopacity      "native"
+#request settitle        "barritas"
 
-/* Opacidad nativa para que sea transparente */
-#request setopacity "native"
-
-/* No necesitamos espejo para un look limpio */
-#request setmirror true
-
-/* Configuración de shaders estándar */
-#request setversion 3 3
-#request setshaderversion 330
-
-/* Título de la ventana (útil para las reglas de Hyprland) */
-#request settitle "barritas"
-
-/* Geometría: 
-   Ajusta 1920 al ancho de tu monitor. 
-   400 es la altura del visualizador en la parte inferior. */
+/* Geometría: En la parte inferior de un monitor 1080p */
 #request setgeometry 0 0 1920 400
 
-/* Fondo totalmente transparente (el último 00 es el canal alpha) */
+/* Transparencia total del fondo */
 #request setbg 00000000
 
-/* El truco para Hyprland/Wayland: 
-   Usamos "!" para que sea una ventana no gestionada (unmanaged) */
+/* El "!" es vital para que Wayland/Hyprland no intente mover la ventana */
 #request setxwintype "!"
 
-/* Fuente de audio: auto usa el micrófono/salida por defecto de Pipewire/Pulse */
+/* 4. RENDERIZADO Y AUDIO */
 #request setsource "auto"
-
-/* Sincronización y suavidad */
+#request setmirror true
+#request setversion 3 3
+#request setshaderversion 330
 #request setswap 1
 #request setinterpolate true
 #request setframerate 0
-
-/* Mejora el rendimiento */
 #request setfullscreencheck true
-
-/* Configuración de procesamiento de audio */
 #request setsamplesize 1024
 #request setbufsize 4096
 #request setsamplerate 22050

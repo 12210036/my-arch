@@ -11,7 +11,6 @@ PS1="\[\e[35m\]\u\[\e[34m\]@\h \[\e[36m\]\w\[\e[0m\]\$ "
 
 # Alias para gestionar tus dotfiles rápido
 alias dots='cd ~/portafolio'
-alias upload='cd ~/portafolio && git add . && git commit -m "update" && git push origin main'
-
+alias desinc="cp -r ~/.config/{hypr,kitty,waybar,rofi,glava} ~/portafolio/dotfiles/ && cp ~/.bashrc ~/portafolio/dotfiles/bash/ && cd ~/portafolio && git add . && git commit -m 'Update completo: $(date +%D-%H:%M)' && git push origin main && cd -"
 # Asegurar que tus scripts funcionen
 export PATH="$HOME/.local/bin:$PATH"

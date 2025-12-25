@@ -1,5 +1,5 @@
 /* 1. Mover el include al principio */
-#include "wal_colors.glsl"
+#include "pywal_colors.glsl"
 
 /* Center line thickness (pixels) */
 #define C_LINE 60
