@@ -1,0 +1,1 @@
+/home/dogma25/.cache/wal/glava.glsl

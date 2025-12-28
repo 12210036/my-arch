@@ -1,0 +1,12 @@
+// Settings in here override those in "LSP/LSP.sublime-settings"
+
+	{
+	    "clients": {
+	        "clangd": {
+	            "enabled": true,
+	            "command": ["clangd", "--header-insertion=never"],
+	            "selector": "source.c | source.c++"
+	        }
+	    }
+	}	
+

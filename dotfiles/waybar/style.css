@@ -1,0 +1,76 @@
+/* Importamos los colores generados por Pywal */
+@import "../../.cache/wal/colors-waybar.css";
+
+/* --- ASIGNACIÓN DE COLORES DINÁMICOS --- */
+/* Usamos las variables de Pywal: @color0, @color1, etc. */
+
+@define-color background rgba(0, 0, 0, 0.0);
+/* Usamos el color de fondo de la imagen para los módulos con algo de transparencia */
+@define-color module-bg alpha(@background, 0.8); 
+/* El color principal del wallpaper será nuestro 'Dorado' */
+@define-color autumn-gold @color3; 
+/* Un color de acento para alertas */
+@define-color autumn-red @color1; 
+/* Un color secundario */
+@define-color autumn-orange @color5; 
+/* Texto que contraste con el fondo */
+@define-color text-color @foreground; 
+
+* {
+    font-family:'Minecraft' ,'FiraCode Nerd Font', 'sans-serif'; 
+    font-size: 13px;
+    font-weight: bold;
+    color: @text-color; 
+}
+
+/* --- 1. Estilo Principal de la Barra --- */
+#waybar {
+    background-color: @background;
+    border-bottom: none; 
+}
+
+/* --- 2. Estilo Base de los Módulos --- */
+#waybar .module, #clock, #pulseaudio, #battery, #custom-network-status, #workspaces, #custom-cava {
+    padding: 0 10px; 
+    margin: 4px; 
+    border-radius: 6px; 
+    background-color:@module-bg;
+}
+
+/* --- 3. Workspaces --- */
+#workspaces button {
+    padding: 0 10px; 
+    color: @text-color;
+    background-color: transparent; 
+    border-radius: 6px;
+    border: none;
+    transition: all 0.2s ease-in-out; 
+}
+
+#workspaces button.active {
+    color: @autumn-gold; 
+    background-color: alpha(@autumn-gold, 0.2); 
+    border-bottom: 2px solid @autumn-gold;
+}
+
+#workspaces button:hover {
+    background-color: alpha(@autumn-red, 0.2); 
+}
+
+/* --- 4. Estados Específicos --- */
+#clock { color: @autumn-gold; }
+
+#pulseaudio.muted { color: @autumn-red; }
+
+#battery.charging, #battery.full { color: @autumn-gold; }
+#battery.warning { color: @autumn-orange; }
+#battery.critical { color: @autumn-red; }
+
+#custom-network-status.network-wifi,
+#custom-network-status.network-ethernet { color: @autumn-gold; }
+
+#custom-cava {
+    font-family: "JetBrainsMono Nerd Font", "monospace";
+    min-width: 120px; /* Ajusta este valor según tu número de barras */
+	color: @color3;
+}

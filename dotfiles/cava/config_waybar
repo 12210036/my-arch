@@ -1,0 +1,15 @@
+[general]
+# Aumentamos el número de barras para que sea más ancho
+bars = 20 
+
+[output]
+method = raw
+raw_target = /dev/stdout
+data_format = ascii
+ascii_max_range = 8
+
+[smoothing]
+# Esto hace que el movimiento sea más suave y no tan saltarín
+monstercat = 1
+waves = 1
+noise_reduction = 0
